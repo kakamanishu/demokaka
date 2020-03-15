@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE generatorConfiguration PUBLIC
+        "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+        "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+
+
+<!-- 可以用于加载配置项或者配置文件，在整个配置文件中就可以使用${propertyKey}的方式来引用配置项
+    resource：配置资源加载地址，使用resource，MBG从classpath开始找，比如com/myproject/generatorConfig.properties
+    url：配置资源加载地质，使用URL的方式，比如file:///C:/myfolder/generatorConfig.properties.
+    注意，两个属性只能选择一个;
+
+    另外，如果使用了mybatis-generator-maven-plugin，那么在pom.xml中定义的properties都可以直接在generatorConfig.xml中使用
+<properties resource="" url="" />
+ -->
+
+<!-- 在MBG工作的时候，需要额外加载的依赖包
+   location属性指明加载jar/zip包的全路径
+<classPathEntry location="/Program Files/IBM/SQLLIB/java/db2java.zip" />
+ -->
+
+<!--
+    context:生成一组对象的环境
+    	id:必选，上下文id，用于在生成错误时提示
+    	defaultModelType:指定生成对象的样式
+	        1，conditional(默认值)：类似hierarchical；这个模型与hierarchical模型相似,除了如果一个实体类只包含一个字段,则不会单独生成此实体类。因此,如果一个表的主键只有一个字段,
+	        	那么不会为该字段生成单独的实体类,会将该字段合并到基本实体类中。
+	        2，flat：所有内容（主键，blob）等全部生成在一个对象中；
+	        3，hierarchical：主键生成一个XXKey对象(key class)，Blob等单独生成一个对象，其他简单属性在一个对象中(record class)
+	    targetRuntime:
+	        1，MyBatis3：默认的值，生成基于MyBatis3.x以上版本的内容，包括XXXBySample；
+	        2，MyBatis3Simple：类似MyBatis3，只是不生成XXXBySample；
+	    introspectedColumnImpl：类全限定名，用于扩展MBG
+-->
+
+<generatorConfiguration>
+    <!--数据库驱动 -->
+    <properties resource="application.properties" />
+
+
+    <!-- 用户相关 -->
+    <!--  执行generator插件生成文件的命令:call mvn mybatis-generator:generate -e
+    	元素类型为 "context" 的内容必须匹配 "(property*,plugin*,commentGenerator?,(connectionFactory|jdbcConnection),javaTypeResolver?,
+    	javaModelGenerator,sqlMapGenerator?,javaClientGenerator?,table+)
+      -->
+    <context id="DB2Tables" targetRuntime="MyBatis3">
+
+        <!-- 注释-->
+        <commentGenerator>
+            <!--是否生成注释带时间戳-->
+            <property name="suppressDate" value="true"/>
+            <!-- 是否去除自动生成的注释 true：是    false:否 -->
+            <property name="suppressAllComments" value="true"/>
+        </commentGenerator>
+
+        <!-- 数据库连接-->
+        <jdbcConnection driverClass="com.mysql.jdbc.Driver"
+                        connectionURL="${spring.datasource.url}"
+                        userId= "${spring.datasource.username}"
+                        password= "${spring.datasource.password}">
+        </jdbcConnection>
+
+        <!-- 默认false，把JDBC DECIMAL 和 NUMERIC 类型解析为 Integer，为 true时把JDBC DECIMAL 和
+           NUMERIC 类型解析为java.math.BigDecimal -->
+        <javaTypeResolver >
+            <property name="forceBigDecimals" value="false" />
+        </javaTypeResolver>
+
+        <!--指定javaBean生成的位置 javaBean生成的位置-->
+        <javaModelGenerator targetPackage="com.example.demokaka.model" targetProject="src/main/java">
+            <!-- enableSubPackages:是否让schema作为包的后缀 -->
+            <property name="enableSubPackages" value="true" />
+            <!-- 从数据库返回的值被清理前后的空格 -->
+            <property name="trimStrings" value="true" />
+        </javaModelGenerator>
+
+        <!--sql映射文件生成的位置-->
+        <sqlMapGenerator targetPackage="com.example.demokaka.mapper"  targetProject="src/main/java">
+            <property name="enableSubPackages" value="true" />
+        </sqlMapGenerator>
+
+        <!--指定dao接口生成的位置-->
+        <javaClientGenerator type="ANNOTATEDMAPPER" targetPackage="com.example.demokaka.mapper"  targetProject="src/main/java">
+            <property name="enableSubPackages" value="true" />
+            <!--enableSelectByPrimaryKey（默认true）：指定是否生成按照主键查询对象的语句（就是getById或get）；-->
+            <!--8，enableUpdateByPrimaryKey（默认true）：指定是否生成按照主键修改对象的语句（即update)；-->
+            <!--9，enableDeleteByPrimaryKey-->
+            <property name="enableSelectByPrimaryKey" value="true"/>
+            <property name="enableUpdateByPrimaryKey" value="true"/>
+            <property name="enableDeleteByPrimaryKey" value="true"/>
+
+        </javaClientGenerator>
+
+        <!--table是指定每个表的生成策略 生成对应表及类名-->
+
+        <table tableName="regulation" domainObjectName="Regulation"></table>
+
+    </context>
+</generatorConfiguration>
