@@ -17,7 +17,7 @@ import static com.example.demokaka.Utils.InDb.readFile;
 @RestController
 public class InDbController {
     @Resource
-    RegulationMapper regulationMapper;
+    RegulationMapper regulationMapper;//用来连接数据库的变量的定义
 
     @RequestMapping("/indb")
     public String InDb() {
