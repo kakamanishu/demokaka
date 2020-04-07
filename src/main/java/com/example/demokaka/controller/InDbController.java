@@ -21,7 +21,8 @@ public class InDbController {
 
     @RequestMapping("/indb")
     public String InDb() {
-        regulationMapper.deleteByExample(new RegulationExample());
+        regulationMapper.deleteByExample(new RegulationExample());//调用删除函数清regulation表
+        System.out.println("===>Regulation清空");
         ArrayList<String> allFileName = getAllFileName("src\\main\\resources\\docs\\");
         for (String name : allFileName) {
             System.out.println(name);
