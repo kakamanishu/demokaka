@@ -35,23 +35,12 @@ public interface RegulationMapper {
         "By_Meeting, main_body)",
         "values (#{regulationId,jdbcType=INTEGER}, #{regulationTitle,jdbcType=VARCHAR}, ",
         "#{publishTime,jdbcType=VARCHAR}, #{publisher,jdbcType=VARCHAR}, ",
-        "#{byMeeting,jdbcType=VARCHAR}, #{mainBody,jdbcType=LONGVARCHAR})"
+        "#{byMeeting,jdbcType=VARCHAR}, #{mainBody,jdbcType=VARCHAR})"
     })
     int insert(Regulation record);
 
     @InsertProvider(type=RegulationSqlProvider.class, method="insertSelective")
     int insertSelective(Regulation record);
-
-    @SelectProvider(type=RegulationSqlProvider.class, method="selectByExampleWithBLOBs")
-    @Results({
-        @Result(column="Regulation_id", property="regulationId", jdbcType=JdbcType.INTEGER, id=true),
-        @Result(column="Regulation_title", property="regulationTitle", jdbcType=JdbcType.VARCHAR),
-        @Result(column="publish_time", property="publishTime", jdbcType=JdbcType.VARCHAR),
-        @Result(column="publisher", property="publisher", jdbcType=JdbcType.VARCHAR),
-        @Result(column="By_Meeting", property="byMeeting", jdbcType=JdbcType.VARCHAR),
-        @Result(column="main_body", property="mainBody", jdbcType=JdbcType.LONGVARCHAR)
-    })
-    List<Regulation> selectByExampleWithBLOBs(RegulationExample example);
 
     @SelectProvider(type=RegulationSqlProvider.class, method="selectByExample")
     @Results({
@@ -59,7 +48,8 @@ public interface RegulationMapper {
         @Result(column="Regulation_title", property="regulationTitle", jdbcType=JdbcType.VARCHAR),
         @Result(column="publish_time", property="publishTime", jdbcType=JdbcType.VARCHAR),
         @Result(column="publisher", property="publisher", jdbcType=JdbcType.VARCHAR),
-        @Result(column="By_Meeting", property="byMeeting", jdbcType=JdbcType.VARCHAR)
+        @Result(column="By_Meeting", property="byMeeting", jdbcType=JdbcType.VARCHAR),
+        @Result(column="main_body", property="mainBody", jdbcType=JdbcType.VARCHAR)
     })
     List<Regulation> selectByExample(RegulationExample example);
 
@@ -75,15 +65,12 @@ public interface RegulationMapper {
         @Result(column="publish_time", property="publishTime", jdbcType=JdbcType.VARCHAR),
         @Result(column="publisher", property="publisher", jdbcType=JdbcType.VARCHAR),
         @Result(column="By_Meeting", property="byMeeting", jdbcType=JdbcType.VARCHAR),
-        @Result(column="main_body", property="mainBody", jdbcType=JdbcType.LONGVARCHAR)
+        @Result(column="main_body", property="mainBody", jdbcType=JdbcType.VARCHAR)
     })
     Regulation selectByPrimaryKey(Integer regulationId);
 
     @UpdateProvider(type=RegulationSqlProvider.class, method="updateByExampleSelective")
     int updateByExampleSelective(@Param("record") Regulation record, @Param("example") RegulationExample example);
-
-    @UpdateProvider(type=RegulationSqlProvider.class, method="updateByExampleWithBLOBs")
-    int updateByExampleWithBLOBs(@Param("record") Regulation record, @Param("example") RegulationExample example);
 
     @UpdateProvider(type=RegulationSqlProvider.class, method="updateByExample")
     int updateByExample(@Param("record") Regulation record, @Param("example") RegulationExample example);
@@ -97,17 +84,7 @@ public interface RegulationMapper {
           "publish_time = #{publishTime,jdbcType=VARCHAR},",
           "publisher = #{publisher,jdbcType=VARCHAR},",
           "By_Meeting = #{byMeeting,jdbcType=VARCHAR},",
-          "main_body = #{mainBody,jdbcType=LONGVARCHAR}",
-        "where Regulation_id = #{regulationId,jdbcType=INTEGER}"
-    })
-    int updateByPrimaryKeyWithBLOBs(Regulation record);
-
-    @Update({
-        "update regulation",
-        "set Regulation_title = #{regulationTitle,jdbcType=VARCHAR},",
-          "publish_time = #{publishTime,jdbcType=VARCHAR},",
-          "publisher = #{publisher,jdbcType=VARCHAR},",
-          "By_Meeting = #{byMeeting,jdbcType=VARCHAR}",
+          "main_body = #{mainBody,jdbcType=VARCHAR}",
         "where Regulation_id = #{regulationId,jdbcType=INTEGER}"
     })
     int updateByPrimaryKey(Regulation record);

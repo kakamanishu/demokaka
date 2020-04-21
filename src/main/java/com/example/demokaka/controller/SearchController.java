@@ -4,68 +4,88 @@ import com.example.demokaka.mapper.RegulationMapper;
 import com.example.demokaka.model.Regulation;
 import com.example.demokaka.model.RegulationExample;
 import org.hibernate.validator.constraints.EAN;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
+import java.math.BigDecimal;
 import java.util.List;
 
-@RestController
+@Controller
 public class SearchController {
 
     @Resource
     RegulationMapper regulationMapper;
 
-    @RequestMapping("/searchByTitle")
-    public List<Regulation> searchByTitle(String keyword){
+    @RequestMapping("/search")
+    public String search(String kind, String keyword, Model model) {
+        double upTime;//方法的执行时间(秒)
+        long startTime = System.currentTimeMillis(); //获取开始时间
         RegulationExample regulationExample = new RegulationExample();
-        RegulationExample.Criteria criteria = regulationExample.createCriteria();
-        criteria.andRegulationTitleLike("%"+keyword+"%");
-
+        switch (kind) {
+            case "全文":
+                regulationExample.or().andRegulationTitleLike('%'+keyword+'%');
+                regulationExample.or().andByMeetingLike('%'+keyword+'%');
+                regulationExample.or().andPublishTimeLike('%'+keyword+'%');
+                regulationExample.or().andPublisherLike('%'+keyword+'%');
+                regulationExample.or().andMainBodyLike('%'+keyword+'%');
+                break;
+            case "标题":
+                regulationExample.or().andRegulationTitleLike('%'+keyword+'%');
+                break;
+            case "颁布会议":
+                regulationExample.or().andByMeetingLike('%'+keyword+'%');
+                break;
+            case "颁布时间":
+                regulationExample.or().andPublishTimeLike('%'+keyword+'%');
+                break;
+            case "颁布人":
+                regulationExample.or().andPublisherLike('%'+keyword+'%');
+                break;
+            case "正文":
+                regulationExample.or().andMainBodyLike('%'+keyword+'%');
+                break;
+        }
         //开始查询数据库
         List<Regulation> regulations = regulationMapper.selectByExample(regulationExample);
-
+        for (Regulation regulation : regulations) {
+            String format = "<a class=\"btn-small btn-round\">"+keyword+"</a>";
+            switch (kind) {
+                case "所有":
+                    regulation.setPublisher(regulation.getPublisher().replace(keyword, format));
+                    regulation.setMainBody(regulation.getMainBody().replace(keyword, format));
+                    regulation.setPublishTime(regulation.getPublishTime().replace(keyword, format));
+                    regulation.setByMeeting(regulation.getByMeeting().replace(keyword, format));
+                    regulation.setRegulationTitle(regulation.getRegulationTitle().replace(keyword, format));
+                    break;
+                case "标题":
+                    regulation.setRegulationTitle(regulation.getRegulationTitle().replace(keyword, format));
+                    break;
+                case "颁布会议":
+                    regulation.setByMeeting(regulation.getByMeeting().replace(keyword, format));
+                    break;
+                case "颁布时间":
+                    regulation.setPublishTime(regulation.getPublishTime().replace(keyword, format));
+                    break;
+                case "颁布人":
+                    regulation.setPublisher(regulation.getPublisher().replace(keyword, format));
+                    break;
+                case "正文":
+                    regulation.setMainBody(regulation.getMainBody().replace(keyword, format));
+                    break;
+            }
+        }
+        long endTime = System.currentTimeMillis(); //获取结束时间
+        upTime = new BigDecimal(endTime - startTime).divide(new BigDecimal(1000)).doubleValue();//耗时(秒)
+        System.out.println(regulations.size());
+        model.addAttribute("kind", kind);
+        model.addAttribute("keyword", keyword);
+        model.addAttribute("regulations", regulations);
+        model.addAttribute("upTime", upTime);
         //返回形成restfulApi数据
-        return regulations;
+        return "searchResult";
     }
 
-
-    @RequestMapping("/searchByTime")
-    public List<Regulation> searchByTime(String keyword){
-        RegulationExample regulationExample = new RegulationExample();
-        RegulationExample.Criteria criteria = regulationExample.createCriteria();
-        criteria.andPublishTimeLike("%"+keyword+"%");
-
-        //开始查询数据库
-        List<Regulation> regulations = regulationMapper.selectByExample(regulationExample);
-
-        //返回形成restfulApi数据
-        return regulations;
-    }
-
-    @RequestMapping("/searchByPublisher")
-    public List<Regulation> searchByPublisher(String keyword){
-        RegulationExample regulationExample = new RegulationExample();
-        RegulationExample.Criteria criteria = regulationExample.createCriteria();
-        criteria.andPublisherLike("%"+keyword+"%");
-
-        //开始查询数据库
-        List<Regulation> regulations = regulationMapper.selectByExample(regulationExample);
-
-        //返回形成restfulApi数据
-        return regulations;
-    }
-
-    @RequestMapping("/searchByMeeting")
-    public List<Regulation> searchByMeeting(String keyword){
-        RegulationExample regulationExample = new RegulationExample();
-        RegulationExample.Criteria criteria = regulationExample.createCriteria();
-        criteria.andByMeetingLike("%"+keyword+"%");
-
-        //开始查询数据库
-        List<Regulation> regulations = regulationMapper.selectByExample(regulationExample);
-
-        //返回形成restfulApi数据
-        return regulations;
-    }
 }

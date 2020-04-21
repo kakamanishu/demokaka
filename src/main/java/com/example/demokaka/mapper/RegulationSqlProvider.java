@@ -49,29 +49,7 @@ public class RegulationSqlProvider {
         }
         
         if (record.getMainBody() != null) {
-            sql.VALUES("main_body", "#{mainBody,jdbcType=LONGVARCHAR}");
-        }
-        
-        return sql.toString();
-    }
-
-    public String selectByExampleWithBLOBs(RegulationExample example) {
-        SQL sql = new SQL();
-        if (example != null && example.isDistinct()) {
-            sql.SELECT_DISTINCT("Regulation_id");
-        } else {
-            sql.SELECT("Regulation_id");
-        }
-        sql.SELECT("Regulation_title");
-        sql.SELECT("publish_time");
-        sql.SELECT("publisher");
-        sql.SELECT("By_Meeting");
-        sql.SELECT("main_body");
-        sql.FROM("regulation");
-        applyWhere(sql, example, false);
-        
-        if (example != null && example.getOrderByClause() != null) {
-            sql.ORDER_BY(example.getOrderByClause());
+            sql.VALUES("main_body", "#{mainBody,jdbcType=VARCHAR}");
         }
         
         return sql.toString();
@@ -88,6 +66,7 @@ public class RegulationSqlProvider {
         sql.SELECT("publish_time");
         sql.SELECT("publisher");
         sql.SELECT("By_Meeting");
+        sql.SELECT("main_body");
         sql.FROM("regulation");
         applyWhere(sql, example, false);
         
@@ -126,25 +105,9 @@ public class RegulationSqlProvider {
         }
         
         if (record.getMainBody() != null) {
-            sql.SET("main_body = #{record.mainBody,jdbcType=LONGVARCHAR}");
+            sql.SET("main_body = #{record.mainBody,jdbcType=VARCHAR}");
         }
         
-        applyWhere(sql, example, true);
-        return sql.toString();
-    }
-
-    public String updateByExampleWithBLOBs(Map<String, Object> parameter) {
-        SQL sql = new SQL();
-        sql.UPDATE("regulation");
-        
-        sql.SET("Regulation_id = #{record.regulationId,jdbcType=INTEGER}");
-        sql.SET("Regulation_title = #{record.regulationTitle,jdbcType=VARCHAR}");
-        sql.SET("publish_time = #{record.publishTime,jdbcType=VARCHAR}");
-        sql.SET("publisher = #{record.publisher,jdbcType=VARCHAR}");
-        sql.SET("By_Meeting = #{record.byMeeting,jdbcType=VARCHAR}");
-        sql.SET("main_body = #{record.mainBody,jdbcType=LONGVARCHAR}");
-        
-        RegulationExample example = (RegulationExample) parameter.get("example");
         applyWhere(sql, example, true);
         return sql.toString();
     }
@@ -158,6 +121,7 @@ public class RegulationSqlProvider {
         sql.SET("publish_time = #{record.publishTime,jdbcType=VARCHAR}");
         sql.SET("publisher = #{record.publisher,jdbcType=VARCHAR}");
         sql.SET("By_Meeting = #{record.byMeeting,jdbcType=VARCHAR}");
+        sql.SET("main_body = #{record.mainBody,jdbcType=VARCHAR}");
         
         RegulationExample example = (RegulationExample) parameter.get("example");
         applyWhere(sql, example, true);
@@ -185,7 +149,7 @@ public class RegulationSqlProvider {
         }
         
         if (record.getMainBody() != null) {
-            sql.SET("main_body = #{mainBody,jdbcType=LONGVARCHAR}");
+            sql.SET("main_body = #{mainBody,jdbcType=VARCHAR}");
         }
         
         sql.WHERE("Regulation_id = #{regulationId,jdbcType=INTEGER}");

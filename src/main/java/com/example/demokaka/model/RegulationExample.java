@@ -443,6 +443,76 @@ public class RegulationExample {
             addCriterion("By_Meeting not between", value1, value2, "byMeeting");
             return (Criteria) this;
         }
+
+        public Criteria andMainBodyIsNull() {
+            addCriterion("main_body is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andMainBodyIsNotNull() {
+            addCriterion("main_body is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andMainBodyEqualTo(String value) {
+            addCriterion("main_body =", value, "mainBody");
+            return (Criteria) this;
+        }
+
+        public Criteria andMainBodyNotEqualTo(String value) {
+            addCriterion("main_body <>", value, "mainBody");
+            return (Criteria) this;
+        }
+
+        public Criteria andMainBodyGreaterThan(String value) {
+            addCriterion("main_body >", value, "mainBody");
+            return (Criteria) this;
+        }
+
+        public Criteria andMainBodyGreaterThanOrEqualTo(String value) {
+            addCriterion("main_body >=", value, "mainBody");
+            return (Criteria) this;
+        }
+
+        public Criteria andMainBodyLessThan(String value) {
+            addCriterion("main_body <", value, "mainBody");
+            return (Criteria) this;
+        }
+
+        public Criteria andMainBodyLessThanOrEqualTo(String value) {
+            addCriterion("main_body <=", value, "mainBody");
+            return (Criteria) this;
+        }
+
+        public Criteria andMainBodyLike(String value) {
+            addCriterion("main_body like", value, "mainBody");
+            return (Criteria) this;
+        }
+
+        public Criteria andMainBodyNotLike(String value) {
+            addCriterion("main_body not like", value, "mainBody");
+            return (Criteria) this;
+        }
+
+        public Criteria andMainBodyIn(List<String> values) {
+            addCriterion("main_body in", values, "mainBody");
+            return (Criteria) this;
+        }
+
+        public Criteria andMainBodyNotIn(List<String> values) {
+            addCriterion("main_body not in", values, "mainBody");
+            return (Criteria) this;
+        }
+
+        public Criteria andMainBodyBetween(String value1, String value2) {
+            addCriterion("main_body between", value1, value2, "mainBody");
+            return (Criteria) this;
+        }
+
+        public Criteria andMainBodyNotBetween(String value1, String value2) {
+            addCriterion("main_body not between", value1, value2, "mainBody");
+            return (Criteria) this;
+        }
     }
 
     public static class Criteria extends GeneratedCriteria {

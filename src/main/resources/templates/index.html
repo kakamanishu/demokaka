@@ -303,15 +303,19 @@
                 <div class="col-md-12">
                     <div class="main-localseo-area">
                         <div class="main-localseo border text-center bg-white m-top-50">
-                            <form class="form-inline">
-                                <div class="form-group">
-                                    <input type="text" class="form-control" placeholder="关键字一">
+                            <form class="form-inline" action="/search" method="post">
+                                <div class="form-group ">
+                                    <select type="text" class="form-control" name="kind">
+                                        <option value="全文" selected>全文</option>
+                                        <option value="标题">标题</option>
+                                        <option value="颁布时间">颁布时间</option>
+                                        <option value="颁布会议">颁布会议</option>
+                                        <option value="颁布人">颁布人</option>
+                                        <option value="正文">正文</option>
+                                    </select>
                                 </div>
-                                <div class="form-group">
-                                    <input type="text" class="form-control" placeholder="关键字二">
-                                </div>
-                                <div class="form-group">
-                                    <input type="email" class="form-control" placeholder="关键字三">
+                                <div class="form-group" style="width: 50%">
+                                    <input required name="keyword" type="text" class="form-control" placeholder="请在此输入关键词">
                                 </div>
                                 <button type="submit" class="btn btn-primary btn-round">立即搜索</button>
                             </form>
