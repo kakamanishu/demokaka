@@ -53,7 +53,7 @@ public class SearchController {
         for (Regulation regulation : regulations) {
             String format = "<a class=\"btn-small btn-round\">"+keyword+"</a>";
             switch (kind) {
-                case "所有":
+                case "全文":
                     regulation.setPublisher(regulation.getPublisher().replace(keyword, format));
                     regulation.setMainBody(regulation.getMainBody().replace(keyword, format));
                     regulation.setPublishTime(regulation.getPublishTime().replace(keyword, format));
