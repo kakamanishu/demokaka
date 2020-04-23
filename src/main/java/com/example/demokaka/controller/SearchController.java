@@ -80,6 +80,7 @@ public class SearchController {
         long endTime = System.currentTimeMillis(); //获取结束时间
         upTime = new BigDecimal(endTime - startTime).divide(new BigDecimal(1000)).doubleValue();//耗时(秒)
         System.out.println(regulations.size());
+        //将数据加入model
         model.addAttribute("kind", kind);
         model.addAttribute("keyword", keyword);
         model.addAttribute("regulations", regulations);
