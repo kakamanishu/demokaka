@@ -29,11 +29,6 @@
         <link rel="stylesheet" href="assets/css/responsive.css" />
 
         <script src="assets/js/vendor/modernizr-2.8.3-respond-1.4.2.min.js"></script>
-        <script>
-            function zhankai(obj,str){
-                obj.innerHTML=str;
-            }
-        </script>
 
 
     </head>
@@ -200,7 +195,7 @@
                                         </div>
                                     </div>
                                     <div class="divider"></div>
-                                    <p class="text-black" th:utext="${regulation.getMainBody().substring(0,50)+'....' }" th:onclick="'javascript:zhankai(this,'+${regulation.getMainBody()}+')'">正文</p>
+                                    <p class="text-black" th:utext="${regulation.getMainBody().substring(0,50)+'....' }" th:data-text="${regulation.getMainBody()}" onclick="javascript:this.innerHTML=(this.dataset.text);">正文</p>
                                     <div class="newest-author">
                                         <div class="newest-author-img pull-left">
                                             <img class="img-circle" src="assets/images/newest-author-01.jpg" alt="" />
