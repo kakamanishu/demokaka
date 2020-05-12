@@ -11,16 +11,20 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
 public class SearchController {
 
+    public static final int pageSize = 20;
+
     @Resource
     RegulationMapper regulationMapper;
 
     @RequestMapping("/search")
-    public String search(String kind, String keyword, Model model) {
+    public String search(String kind, String keyword, Model model,Integer current) {
+
         double upTime;//方法的执行时间(秒)
         long startTime = System.currentTimeMillis(); //获取开始时间
         RegulationExample regulationExample = new RegulationExample();
@@ -48,6 +52,10 @@ public class SearchController {
                 regulationExample.or().andMainBodyLike('%'+keyword+'%');
                 break;
         }
+        if (current == null)
+            current = 1;
+        long l = regulationMapper.countByExample(regulationExample);
+        regulationExample.setOrderByClause("Regulation_id limit "+pageSize*(current-1)+", "+pageSize);
         //开始查询数据库
         List<Regulation> regulations = regulationMapper.selectByExample(regulationExample);
         for (Regulation regulation : regulations) {
@@ -80,11 +88,17 @@ public class SearchController {
         long endTime = System.currentTimeMillis(); //获取结束时间
         upTime = new BigDecimal(endTime - startTime).divide(new BigDecimal(1000)).doubleValue();//耗时(秒)
         System.out.println(regulations.size());
+        ArrayList<String> pages = new ArrayList<>();
+        for (int i = 0; i < l; i++) {
+            pages.add("/search?kind="+kind+"&keyword="+keyword+"&current="+(i+1));
+        }
         //将数据加入model
         model.addAttribute("kind", kind);
         model.addAttribute("keyword", keyword);
         model.addAttribute("regulations", regulations);
         model.addAttribute("upTime", upTime);
+        model.addAttribute("pages",pages);
+        model.addAttribute("current",current);
         //返回形成restfulApi数据
         return "searchResult";
     }
