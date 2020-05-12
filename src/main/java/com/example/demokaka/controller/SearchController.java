@@ -17,7 +17,7 @@ import java.util.List;
 @Controller
 public class SearchController {
 
-    public static final int pageSize = 20;
+    public static final int pageSize = 15;
 
     @Resource
     RegulationMapper regulationMapper;
@@ -89,8 +89,9 @@ public class SearchController {
         upTime = new BigDecimal(endTime - startTime).divide(new BigDecimal(1000)).doubleValue();//耗时(秒)
         System.out.println(regulations.size());
         ArrayList<String> pages = new ArrayList<>();
-        for (int i = 0; i < l; i++) {
+        for (int i = 0; i < l/pageSize; i++) {
             pages.add("/search?kind="+kind+"&keyword="+keyword+"&current="+(i+1));
+            System.out.println("/search?kind="+kind+"&keyword="+keyword+"&current="+(i+1));
         }
         //将数据加入model
         model.addAttribute("kind", kind);
